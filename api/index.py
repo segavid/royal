@@ -6,13 +6,16 @@ import re
 TARGET_SOURCE_DOMAIN = 'w.royal-drama.com'
 VERIFICATION_TAG = '<meta name="google-site-verification" content="HWrhtgkCPV2OT-OWRzV60Vdl1pWxt35-aEZ7NNDTHWs" />'
 
-BANNER_HTML = '''<br><br><br><div style="margin:32px auto 24px auto;max-width:900px;border:2px solid #d32f2f;border-radius:15px;background:#fafafa;padding:16px 10px;text-align:center;font-family:'Tajawal',Arial,sans-serif;font-size:24px;color:#d32f2f;font-weight:bold;box-shadow:0 2px 8px #0001;">
-  <a title="قصة عشق" href="https://z.3isk.news/video/" style="color:#d32f2f;text-decoration:none;">قصة عشق</a>
-  <span style="font-weight:normal;color:#d32f2f;margin:0 16px;">-</span>
-  <a href="https://z.3isk.news/series/3isk-se-esref-ruya-watch/" style="color:#d32f2f;text-decoration:none;">مسلسل حلم اشرف</a>
-  <span style="font-weight:normal;color:#d32f2f;margin:0 16px;">-</span>
-  <a href="https://z.3isk.news/series/3isk-se-uzak-sehir-watch-esh-1i30h/" style="color:#d32f2f;text-decoration:none;">مسلسل المدينه البعيده</a>
+BANNER_HTML = '''<br><br><div style="margin:40px auto;max-width:900px;border:2px solid #ff004c;border-radius:14px;background:linear-gradient(135deg,#fff 0%,#ffe6eb 100%);padding:18px 12px;text-align:center;font-family:'Tajawal',Arial,sans-serif;font-size:22px;color:#b30032;font-weight:bold;box-shadow:0 3px 10px rgba(0,0,0,0.1);line-height:1.8;">
+  <a title="مسلسلات تركية" href="https://z.3isk.news/all-turkish-series-esheeq/" style="color:#b30032;text-decoration:none;padding:0 10px;">مسلسلات تركية</a>
+  <span style="font-weight:normal;color:#b30032;">•</span>
+  <a title="مسلسل حلم اشرف" href="https://z.3isk.news/series/3isk-se-esref-ruya-watch/" style="color:#b30032;text-decoration:none;padding:0 10px;">مسلسل حلم اشرف</a>
+  <span style="font-weight:normal;color:#b30032;">•</span>
+  <a title="مسلسل المدينة البعيدة" href="https://z.3isk.news/series/3isk-se-uzak-sehir-watch-esh-1i30h/" style="color:#b30032;text-decoration:none;padding:0 10px;">مسلسل المدينة البعيدة</a>
+  <span style="font-weight:normal;color:#b30032;">•</span>
+  <a title="موقع عشق الاصلي" href="https://z.3isk.news/series/3isk-se-uzak-sehir-watch-esh-1i30h/" style="color:#b30032;text-decoration:none;padding:0 10px;">موقع عشق الاصلي</a>
 </div>'''
+
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -152,4 +155,5 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Content-Type', 'text/plain')
             self.end_headers()
             error_msg = f"Error: {str(e)}"
+
             self.wfile.write(error_msg.encode())
