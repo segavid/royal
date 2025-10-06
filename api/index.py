@@ -152,4 +152,5 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Content-Type', 'text/plain')
             self.end_headers()
             error_msg = f"Error: {str(e)}"
+
             self.wfile.write(error_msg.encode())
