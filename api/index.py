@@ -4,7 +4,7 @@ import urllib.error
 import re
 
 TARGET_SOURCE_DOMAIN = 'w.royal-drama.com'
-VERIFICATION_TAG = '<meta name="google-site-verification" content="4aeE1nom200vJpqjv46jujHDGVAuIdF2tA8rycTjFnE" />'
+VERIFICATION_TAG = '<meta name="google-site-verification" content="YqAf9JvoJylnS58OD0KwdQJSJXgHJW-j-SKLZkMO0mk" />'
 
 BANNER_HTML = '''<br><br><br><div style="margin:32px auto 24px auto;max-width:900px;border:2px solid #d32f2f;border-radius:15px;background:#fafafa;padding:16px 10px;text-align:center;font-family:'Tajawal',Arial,sans-serif;font-size:24px;color:#d32f2f;font-weight:bold;box-shadow:0 2px 8px #0001;">
   <a title="قصة عشق" href="https://z.3isk.news/video/" style="color:#d32f2f;text-decoration:none;">قصة عشق</a>
@@ -112,3 +112,4 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Content-Type', 'text/plain')
             self.end_headers()
             self.wfile.write(f"Error: {str(e)}".encode())
+
