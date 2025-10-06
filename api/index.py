@@ -4,7 +4,7 @@ import urllib.error
 import re
 
 TARGET_SOURCE_DOMAIN = 'w.royal-drama.com'
-VERIFICATION_TAG = '<meta name="google-site-verification" content="HWrhtgkCPV2OT-OWRzV60Vdl1pWxt35-aEZ7NNDTHWs" />'
+VERIFICATION_TAG = '<meta name="google-site-verification" content="4aeE1nom200vJpqjv46jujHDGVAuIdF2tA8rycTjFnE" />'
 
 BANNER_HTML = '''<br><br><div style="margin:40px auto;max-width:900px;border:2px solid #ff004c;border-radius:14px;background:linear-gradient(135deg,#fff 0%,#ffe6eb 100%);padding:18px 12px;text-align:center;font-family:'Tajawal',Arial,sans-serif;font-size:22px;color:#b30032;font-weight:bold;box-shadow:0 3px 10px rgba(0,0,0,0.1);line-height:1.8;">
   <a title="مسلسلات تركية" href="https://z.3isk.news/all-turkish-series-esheeq/" style="color:#b30032;text-decoration:none;padding:0 10px;">مسلسلات تركية</a>
@@ -157,3 +157,4 @@ class handler(BaseHTTPRequestHandler):
             error_msg = f"Error: {str(e)}"
 
             self.wfile.write(error_msg.encode())
+
