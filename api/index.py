@@ -22,7 +22,7 @@ class handler(BaseHTTPRequestHandler):
             # Build target URL
             target_url = f'https://{TARGET_SOURCE_DOMAIN}{path}'
 
-            # Determine current worker domain
+            # Worker origin
             host = self.headers.get('host', 'localhost')
             proto = self.headers.get('x-forwarded-proto', 'https')
             worker_origin = f'{proto}://{host}'
@@ -36,39 +36,41 @@ class handler(BaseHTTPRequestHandler):
             try:
                 response = urllib.request.urlopen(req, timeout=15)
             except urllib.error.HTTPError as e:
-                # Handle 404 redirect
                 if e.code == 404:
                     self.send_response(302)
                     self.send_header('Location', worker_origin + '/')
                     self.end_headers()
                     return
-                else:
-                    self.send_response(e.code)
-                    self.send_header('Content-Type', 'text/plain')
-                    self.end_headers()
-                    self.wfile.write(f'Error {e.code}'.encode())
-                    return
+                self.send_response(e.code)
+                self.end_headers()
+                self.wfile.write(f'Error {e.code}'.encode())
+                return
 
             content_type = response.headers.get('Content-Type', '').lower()
             body = response.read()
 
-            # ---- Non-HTML files (CSS, JS, images, etc.)
-            if 'text/html' not in content_type:
-                self.send_response(200)
-                self.send_header('Content-Type', content_type)
+            # 🧩 Serve non-HTML files directly from origin
+            if not content_type.startswith('text/html'):
+                self.send_response(302)
+                self.send_header('Location', f'https://{TARGET_SOURCE_DOMAIN}{path}')
                 self.end_headers()
-                self.wfile.write(body)
                 return
 
-            # ---- HTML processing
+            # 🧠 Process HTML
             html = body.decode('utf-8', errors='ignore')
 
-            # Rewrite all absolute & relative URLs to worker domain
+            # Fix asset URLs (CSS/JS/images) to load from origin
+            html = re.sub(r'href="/([^"]+\.(?:css|js|png|jpg|jpeg|gif|webp|svg|ico))"',
+                          rf'href="https://{TARGET_SOURCE_DOMAIN}/\1"', html)
+            html = re.sub(r'src="/([^"]+\.(?:css|js|png|jpg|jpeg|gif|webp|svg|ico))"',
+                          rf'src="https://{TARGET_SOURCE_DOMAIN}/\1"', html)
+
+            # Rewrite other internal links to worker domain
             html = re.sub(r'https://www\.zamanarabic\.com', worker_origin, html, flags=re.IGNORECASE)
             html = re.sub(r'href="/', f'href="{worker_origin}/', html)
             html = re.sub(r'src="/', f'src="{worker_origin}/', html)
 
-            # Inject custom <li> links into nav
+            # Inject custom links into navigation
             html = re.sub(
                 r'(<div class="jeg_nav_item">\s*<ul[^>]*class="jeg_menu jeg_top_menu"[^>]*>)([\s\S]*?)(<\/ul>)',
                 rf'\1\2{CUSTOM_LINKS}\3',
@@ -76,7 +78,7 @@ class handler(BaseHTTPRequestHandler):
                 flags=re.IGNORECASE
             )
 
-            # Return final modified HTML
+            # Send final response
             self.send_response(200)
             self.send_header('Content-Type', 'text/html; charset=UTF-8')
             self.end_headers()
